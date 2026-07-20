@@ -28,6 +28,11 @@
 
 run_anova <- function(data, formula, mixed = FALSE, group_levels = NULL) {
   
+  # Convert tibbles to base data frames
+  data <- as.data.frame(data)
+  
+  formula <- stats::as.formula(formula)
+  
   # set factor level order if provided
   if (!is.null(group_levels)) {
     for (col in names(group_levels)) {
