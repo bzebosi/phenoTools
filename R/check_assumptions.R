@@ -42,6 +42,10 @@ check_assumptions <- function(model, data, formula, output_file  = "qq_plot.png"
   # Test whether groups have equal variances
   levene_df <- as.data.frame(car::leveneTest(formula, data = data))
   
+  # Preserve row names as a column
+  levene_df <- cbind(Term = rownames(levene_df), levene_df)
+  rownames(levene_df) <- NULL
+  
   # Create the output directory if it does not exist
   output_dir <- dirname(output_file)
   
