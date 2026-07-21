@@ -27,7 +27,7 @@ check_assumptions <- function(model, data, levene_formula, output_file  = "qq_pl
   data <- as.data.frame(data)
   
   # Convert character formula to formula object
-  formula <- stats::as.formula(levene_formula)
+  levene_formula <- stats::as.formula(levene_formula)
   
   # Extract model residuals
   res <- stats::residuals(model)
