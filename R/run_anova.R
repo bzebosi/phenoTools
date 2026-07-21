@@ -47,6 +47,13 @@ run_anova <- function(data, formula, mixed = FALSE, group_levels = NULL) {
     model <- stats::lm(formula, data = data)
   }
   
+  # ANOVA table
+  anova_table <- as.data.frame(stats::anova(model))
+  
+  # Preserve row names as a column
+  anova_table <- cbind(Term = rownames(anova_table), anova_table)
+  rownames(anova_table) <- NULL
+  
   # Return fitted model and anova table
-  list(model = model, anova = as.data.frame(stats::anova(model)))
+  list(model = model, anova = anova_table)
 }
