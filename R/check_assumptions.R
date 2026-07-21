@@ -21,7 +21,13 @@
 #'     qq_plot : File path to the saved Q-Q plot.
 #' ----------------------------------------------------------------------------
 
-check_assumptions <- function(model, data, formula, plot_name = "qq_plot.png") {
+check_assumptions <- function(model, data, formula, output_file  = "qq_plot.png") {
+  
+  # Convert data to a base data frame
+  data <- as.data.frame(data)
+  
+  # Convert character formula to formula object
+  formula <- stats::as.formula(formula)
   
   # Extract model residuals
   res <- stats::residuals(model)
@@ -32,7 +38,7 @@ check_assumptions <- function(model, data, formula, plot_name = "qq_plot.png") {
   shapiro_df <- data.frame(test = "Shapiro-Wilk", 
                            statistic = unname(shapiro_test$statistic),
                            p_value = shapiro_test$p.value)
-  
+
   # Test whether groups have equal variances
   levene_df <- as.data.frame(car::leveneTest(formula, data = data))
   
@@ -43,8 +49,7 @@ check_assumptions <- function(model, data, formula, plot_name = "qq_plot.png") {
   if (!dir.exists(output_dir)) {dir.create(output_dir, recursive = TRUE)}
   
   # Save Q-Q plot
-  plot_file <- file.path(output_dir, plot_name)
-  grDevices::png(filename = plot_file, width = 1800, height = 1800, res = 300)
+  grDevices::png(filename = output_file, width = 1800, height = 1800, res = 300)
   
   # Normal Q-Q plot of residuals
   stats::qqnorm(res, main = "Normal Q-Q Plot")
@@ -57,5 +62,5 @@ check_assumptions <- function(model, data, formula, plot_name = "qq_plot.png") {
   # Inform the user where the plot was saved
   message("Q-Q plot saved to: ", full_path)
   
-  list(shapiro = shapiro_df, levene = levene_df, qq_plot = plot_file)
+  list(shapiro = shapiro_df, levene = levene_df, qq_plot = full_path)
 }
