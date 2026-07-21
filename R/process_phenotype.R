@@ -12,8 +12,8 @@
 #' ----------------------------------------------------------------------------
 process_phenotype <- function(
     data, group_cols = "Genotype", group_levels = NULL, id_cols = NULL, 
-    trait_cols = NULL, names_to = "Trait", values_to = "Value",
-    trait_levels = NULL, transform = NULL) {
+    trait_cols = NULL, names_to = "Trait", values_to = "Value", 
+    transform = NULL) {
   
   # order grouping variables and convert them to a factor
   if(!is.null(group_levels)){
@@ -32,8 +32,7 @@ process_phenotype <- function(
                               values_drop_na = TRUE)
   
   # set trait order unless another order is provided
-  if (is.null(trait_levels)) { trait_levels <- trait_cols }
-  data[[names_to]] <- factor(data[[names_to]], levels = trait_levels)
+  data[[names_to]] <- factor(data[[names_to]], levels = trait_cols)
   
   # Optional transformation
   if (!is.null(transform)) { data[[values_to]] <- transform(data[[values_to]]) }

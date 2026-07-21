@@ -21,13 +21,13 @@
 #'     qq_plot : File path to the saved Q-Q plot.
 #' ----------------------------------------------------------------------------
 
-check_assumptions <- function(model, data, formula, output_file  = "qq_plot.png") {
+check_assumptions <- function(model, data, levene_formula, output_file  = "qq_plot.png") {
   
   # Convert data to a base data frame
   data <- as.data.frame(data)
   
   # Convert character formula to formula object
-  formula <- stats::as.formula(formula)
+  formula <- stats::as.formula(levene_formula)
   
   # Extract model residuals
   res <- stats::residuals(model)
@@ -40,7 +40,7 @@ check_assumptions <- function(model, data, formula, output_file  = "qq_plot.png"
                            p_value = shapiro_test$p.value)
 
   # Test whether groups have equal variances
-  levene_df <- as.data.frame(car::leveneTest(formula, data = data))
+  levene_df <- as.data.frame(car::leveneTest(levene_formula, data = data))
   
   # Preserve row names as a column
   levene_df <- cbind(Term = rownames(levene_df), levene_df)

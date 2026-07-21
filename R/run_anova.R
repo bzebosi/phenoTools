@@ -26,12 +26,12 @@
 #'   
 #'  ----------------------------------------------------------------------------
 
-run_anova <- function(data, formula, mixed = FALSE, group_levels = NULL) {
+run_anova <- function(data, model_formula, mixed = FALSE, group_levels = NULL) {
   
   # Convert tibbles to base data frames
   data <- as.data.frame(data)
   
-  formula <- stats::as.formula(formula)
+  formula <- stats::as.formula(model_formula)
   
   # set factor level order if provided
   if (!is.null(group_levels)) {
@@ -43,12 +43,11 @@ run_anova <- function(data, formula, mixed = FALSE, group_levels = NULL) {
   # fit linear model or mixed-effects model
   if (mixed) {
     model <- lmerTest::lmer(formula, data = data)
+    anova_table <- as.data.frame(lmerTest::anova(model))
   } else {
     model <- stats::lm(formula, data = data)
+    anova_table <- as.data.frame(stats::anova(model))
   }
-  
-  # ANOVA table
-  anova_table <- as.data.frame(stats::anova(model))
   
   # Preserve row names as a column
   anova_table <- cbind(Term = rownames(anova_table), anova_table)
