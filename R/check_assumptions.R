@@ -21,7 +21,8 @@
 #'     qq_plot : File path to the saved Q-Q plot.
 #' ----------------------------------------------------------------------------
 
-check_assumptions <- function(model, data, levene_formula, output_file  = "qq_plot.png") {
+check_assumptions <- function(model, data, levene_formula, plots_dir = "plots", 
+                              file_name  = "qq_plot") {
   
   # Convert data to a base data frame
   data <- as.data.frame(data)
@@ -35,25 +36,27 @@ check_assumptions <- function(model, data, levene_formula, output_file  = "qq_pl
   # Test whether residuals are normally distributed
   shapiro_test <- stats::shapiro.test(res)
   
-  shapiro_df <- data.frame(test = "Shapiro-Wilk", 
-                           statistic = unname(shapiro_test$statistic),
-                           p_value = shapiro_test$p.value)
+  shapiro_df <- data.frame(
+    test = "Shapiro-Wilk", statistic = unname(shapiro_test$statistic),
+    p_value = shapiro_test$p.value
+    )
 
   # Test whether groups have equal variances
   levene_df <- as.data.frame(car::leveneTest(levene_formula, data = data))
   
   # Preserve row names as a column
-  levene_df <- cbind(Term = rownames(levene_df), levene_df)
+  levene_df <- cbind(term = rownames(levene_df), levene_df)
   rownames(levene_df) <- NULL
   
-  # Create the output directory if it does not exist
-  output_dir <- dirname(output_file)
-  
   # Create output directory if it does not exist
-  if (!dir.exists(output_dir)) {dir.create(output_dir, recursive = TRUE)}
+  if (!dir.exists(plots_dir)) { dir.create(plots_dir, recursive = TRUE)}
+  
+  # Construct file path
+  date_tag <- format(Sys.Date(), "%Y%m%d")
+  file_path <- file.path(plots_dir, paste0(date_tag, "_", file_name, ".pdf"))
   
   # Save Q-Q plot
-  grDevices::png(filename = output_file, width = 1800, height = 1800, res = 300)
+  grDevices::pdf(file = file_path, width = 6, height = 6)
   
   # Normal Q-Q plot of residuals
   stats::qqnorm(res, main = "Normal Q-Q Plot")
@@ -61,7 +64,7 @@ check_assumptions <- function(model, data, levene_formula, output_file  = "qq_pl
   grDevices::dev.off()
   
   # Get the full path to the saved plot
-  full_path <- normalizePath(output_file, mustWork = FALSE)
+  full_path <- normalizePath(file_path, mustWork = FALSE)
   
   # Inform the user where the plot was saved
   message("Q-Q plot saved to: ", full_path)

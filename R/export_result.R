@@ -28,6 +28,11 @@ export_results <- function(results, output_file = "analysis_results.xlsx") {
     stop("results must be a named list of data frames.")
   }
   
+  # Add .xlsx extension if missing
+  if (!grepl("\\.xlsx$", output_file, ignore.case = TRUE)) {
+    output_file <- paste0(output_file, ".xlsx")
+  }
+  
   # Create the output directory if it does not exist
   output_dir <- dirname(output_file)
   if (!dir.exists(output_dir)) {dir.create(output_dir, recursive = TRUE)}

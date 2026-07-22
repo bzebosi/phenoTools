@@ -1,12 +1,13 @@
 plot_theme <- function(
-    base_size = 30, base_family = "", legend_position = "none", x_text_angle = 45, 
-    base_theme = ggplot2::theme_linedraw, strip_fill = "grey85", 
-    show_major_grid = TRUE, show_minor_grid = FALSE, text_face = "bold", 
-    base_linewidth = NULL, line_colour = "black", grid_colour = "grey90"){
+    base_size = 30, base_family = "", legend_position = "none", 
+    x_text_angle = 45, base_theme = ggplot2::theme_linedraw, 
+    strip_fill = "grey85", base_linewidth = NULL,
+    show_major_grid = TRUE, show_minor_grid = FALSE, show_panel_border = TRUE,
+    text_face = "bold", line_colour = "black", grid_colour = "grey90"){
   
   # Internal spacing settings
-  space_unit = "cm"
-  strip_margin = 1
+  space_unit <- "cm"
+  strip_margin <- 1
   panel_spacing <- 2
   
   # scale line widths
@@ -25,6 +26,14 @@ plot_theme <- function(
   # Create minor grid-line settings
   minor_grid <- if (show_minor_grid) {
     ggplot2::element_line(colour = grid_colour, linewidth = base_linewidth * 0.2)
+  } else {
+    ggplot2::element_blank()
+  }
+  
+  # Panel border
+  panel_border <- if (show_panel_border) {
+    ggplot2::element_rect(colour = line_colour, 
+                          linewidth = base_linewidth * 1.5, fill = NA)
   } else {
     ggplot2::element_blank()
   }
@@ -55,11 +64,10 @@ plot_theme <- function(
       axis.ticks = ggplot2::element_line(colour = line_colour, 
                                          linewidth = base_linewidth),
     
-      axis.ticks.length = grid::unit(base_linewidth * 0.3, space_unit),
+      axis.ticks.length = grid::unit(base_linewidth * 0.2, space_unit),
       
       # Panel
-      panel.border = ggplot2::element_rect(
-        colour = line_colour, linewidth = base_linewidth * 1.5, fill = NA),
+      panel.border = panel_border,
       
       panel.spacing = grid::unit(panel_spacing,"lines"),
       panel.grid.major = major_grid, panel.grid.minor = minor_grid,
