@@ -11,6 +11,8 @@ source("https://raw.githubusercontent.com/bzebosi/phenoTools/main/R/check_assump
 source("https://raw.githubusercontent.com/bzebosi/phenoTools/main/R/posthoc_emmeans.R")
 source("https://raw.githubusercontent.com/bzebosi/phenoTools/main/R/export_result.R")
 source("https://raw.githubusercontent.com/bzebosi/phenoTools/main/R/plot_theme.R")
+source("https://raw.githubusercontent.com/bzebosi/phenoTools/main/R/plot_boxplot.R")
+source("https://raw.githubusercontent.com/bzebosi/phenoTools/main/R/save_plot.R")
 
 
 message("phenoTools loaded successfully!")
