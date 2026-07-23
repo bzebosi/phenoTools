@@ -11,7 +11,7 @@ plot_theme <- function(
   panel_spacing <- 2
   
   # scale line widths
-  if (is.null(base_linewidth)) { base_linewidth <- base_size / 20 }
+  if (is.null(base_linewidth)) { base_linewidth <- base_size / 10 }
   
   # Adjust x-axis label
   x_text_hjust <- if (x_text_angle == 0) 0.5 else 1
@@ -50,7 +50,7 @@ plot_theme <- function(
       
       # Axis text
       axis.text.x = ggplot2::element_text(
-        angle = x_text_angle, hjust = x_text_hjust, size = base_size * 0.7),
+        angle = x_text_angle, hjust = x_text_hjust, size = base_size),
       
       axis.text.y = ggplot2::element_text(size = base_size),
       

@@ -8,29 +8,32 @@ plot_boxplot <- function(
 ) {
   
   # Create the base boxplot
-  p <- ggplot2::ggplot(
-    data, ggplot2::aes( x = .data[[x_col]], y = .data[[y_col]],
-                        color = .data[[fill_col]], fill = .data[[fill_col]]))
-    # Add fill
     if (box_fill){
-     p <- p + ggplot2::geom_boxplot(alpha = box_alpha, linewidth = box_linewidth,
-                            outlier.shape = outlier_shape)
+    p <- ggplot2::ggplot(
+      data, ggplot2::aes(x = .data[[x_col]], y = .data[[y_col]],
+                           fill = .data[[fill_col]])) + 
+      ggplot2::geom_boxplot(alpha = box_alpha, linewidth = box_linewidth,
+                            outlier.shape = outlier_shape, color = "black")
+    # Apply a manual fill scale when colors are supplied
+    if (!is.null(colors)) { p <- p + ggplot2::scale_fill_manual(values = colors) }
+    
     } else {
-      p <- p + ggplot2::geom_boxplot(alpha = box_alpha, linewidth = box_linewidth, 
+      p <- ggplot2::ggplot(
+        data, ggplot2::aes(x = .data[[x_col]], y = .data[[y_col]],
+                           color = .data[[fill_col]])) +
+        ggplot2::geom_boxplot(alpha = box_alpha, linewidth = box_linewidth, 
                                      fill = NA, outlier.shape = outlier_shape)
+      # Apply a manual fill scale when colors are supplied
+      if (!is.null(colors)) { 
+        p <- p + ggplot2::scale_color_manual(values = colors)
+      }
     }
   
   # Add jittered observations
   if (show_points) {
-    p <- p + ggplot2::geom_jitter(shape = jitter_shape, size = jitter_size,
-                                  width = jitter_width)
+    p <- p + ggplot2::geom_jitter(shape = jitter_shape, 
+      size = jitter_size, width = jitter_width)
     }
-  
-  # Apply a manual fill scale when colors are supplied
-  if (!is.null(colors)) { 
-    p <- p + ggplot2::scale_fill_manual(values = colors) +
-      ggplot2::scale_color_manual(values = colors)
-  }
   
   # Set the visible y-axis range
   if (!is.null(y_limits)) { 
