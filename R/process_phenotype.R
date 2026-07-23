@@ -18,6 +18,7 @@ process_phenotype <- function(
   # order grouping variables and convert them to a factor
   if(!is.null(group_levels)){
     for (cx in names(group_levels)){
+      data <- dplyr::filter(data, .data[[cx]] %in% group_levels[[cx]])
       data[[cx]] <- factor(data[[cx]], levels = group_levels[[cx]])
     }
   }
