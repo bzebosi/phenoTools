@@ -43,7 +43,7 @@ run_anova <- function(data, model_formula, mixed = FALSE, group_levels = NULL) {
   # fit linear model or mixed-effects model
   if (mixed) {
     model <- lmerTest::lmer(formula, data = data)
-    anova_table <- as.data.frame(lmerTest::anova(model))
+    anova_table <- as.data.frame(stats::anova(model))
   } else {
     model <- stats::lm(formula, data = data)
     anova_table <- as.data.frame(stats::anova(model))
